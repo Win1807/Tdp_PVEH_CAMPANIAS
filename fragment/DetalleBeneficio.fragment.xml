@@ -1,0 +1,112 @@
+<c:FragmentDefinition          
+          xmlns:l="sap.ui.layout" 
+          xmlns:f="sap.ui.layout.form" 
+          xmlns:mvc="sap.ui.core.mvc"
+          xmlns:c="sap.ui.core" 
+          xmlns:t="sap.ui.table"
+          xmlns="sap.m">    
+        <Dialog title="Detalle de Beneficios" contentWidth="60px">
+        <l:VerticalLayout width="100%">
+          <f:SimpleForm 
+            id="Campania"
+            editable="false"
+            layout="ResponsiveGridLayout"
+            title="Campaña"
+            labelSpanXL="1"
+            labelSpanL="1"
+            labelSpanM="1"
+            labelSpanS="4"
+            adjustLabelSpan="true"
+            emptySpanXL="1"
+            emptySpanL="1"
+            emptySpanM="1"
+            emptySpanS="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            singleContainerFullSize="false">
+                  <f:content>
+                      
+                  </f:content>
+            </f:SimpleForm>
+
+            <Table 
+                id="tbBeneOtor"
+                mode="None"
+                visible="false"
+                items="{path:'/'}"
+                class="sapUiResponsiveContent">
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{descripcion}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column width="6rem">
+                        <Label text="Descripción benefic." />
+                    </Column>
+                </columns>
+            </Table>
+
+            <f:Form id="Beneficios" editable="true" title="Beneficios">
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                        labelSpanXL="1"
+                        labelSpanL="1"
+                        labelSpanM="1"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="0"
+                        emptySpanL="1"
+                        emptySpanM="1"
+                        emptySpanS="1"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="2"
+                        singleContainerFullSize="false" />
+                </f:layout>
+                <f:formContainers>
+
+                    <f:FormContainer title="">
+                        <f:formElements>
+                            <f:FormElement label="" required="true" >
+                                <f:fields>
+                                    <Button text="Continuar" press="onContinuar"/>
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+
+                </f:formContainers>
+            </f:Form>
+
+              <Table 
+                id="tbBene2"
+                mode="None"
+                items="{path:'/'}"
+                class="sapUiResponsiveContent">
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{descripcion}" />
+                            <CheckBox select="onSelectCheck"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column width="6rem">
+                        <Label text="Descripción benefic." />
+                    </Column>
+                    <Column width="6rem">
+                        <Label text="Selección" />
+                    </Column>
+                </columns>
+            </Table>
+            </l:VerticalLayout>
+            <endButton>
+              <Button type="Reject" text="Cerrar" icon="sap-icon://decline" press="onCerrarDetalle"/>
+            </endButton>
+        </Dialog>
+</c:FragmentDefinition>

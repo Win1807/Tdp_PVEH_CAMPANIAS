@@ -1,0 +1,102 @@
+<c:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:c="sap.ui.core"    
+    xmlns:l="sap.ui.layout">
+    <Dialog 
+        title = "Selección Serie"
+        afterClose= "cancelarBuscarSerie"
+        enableScrolling="true">
+        <l:VerticalLayout>
+
+            <f:SimpleForm id="SimpleFormDisplay354"
+                editable="false"
+                layout="ResponsiveGridLayout"
+                title="Filtros"
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="3"
+                labelSpanS="12"
+                adjustLabelSpan="true"
+                emptySpanXL="4"
+                emptySpanL="4"
+                emptySpanM="4"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false">
+                <f:content>
+                    <Label text="Serie" labelFor="codigo"/>
+                    <MultiInput id="codigo" enableMultiLineMode="true"/>
+                    <Label text="Versión" textFor="material"/>
+                    <Input id="material" submit="BuscarSerie"/>
+                    <Label text="Descripción" textFor="descripcion"/>
+                    <Input id="descripcion" submit="BuscarSerie"/>
+                    <Label text="Resultados" textFor="cantidad"/>
+                    <Select id="cantidad">
+                        <c:Item key="20" text="20"/>
+                        <c:Item key="50" text="50"/>
+                        <c:Item key="100" text="100"/>
+
+                    </Select>
+                    <Label text="Buscar" textFor="buscar"/>
+                    <Button 
+                        name="buscar"
+                        text="Buscar"
+                        press="BuscarSerie"
+                        type="Accept"
+                        icon="sap-icon://search"/>
+                </f:content>
+            </f:SimpleForm>
+
+            <Table 
+                id="tbBusqueda"
+                mode="MultiSelect"
+                busyIndicatorDelay="{oModel2>/tableBusyDelay}"
+                growing="true"
+                growingScrollToLoad="true"
+                growingThreshold="2000"
+                selectionChange="onSelectionChange"
+                updateFinished="onUpdateFinished"
+                items="{path:'/'}"
+                class="sapUiResponsiveContent">
+                <items>
+                    <ColumnListItem type="Active">
+                        <cells>
+                            <Text text="{path: 'vhcle', formatter: '.formatter.borrar0izalfanumerico'}" wrapping="false"/>
+                            <Text text="{path: 'matnr', formatter: '.formatter.integer'}" wrapping="false"/>
+                            <Text text="{maktx}"></Text>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column>
+                        <Label text="Código serie" />
+                    </Column>
+                    <Column>
+                        <Label text="Versión" />
+                    </Column>
+                    <Column>
+                        <Label text="Descripción" />
+                    </Column>
+                </columns>
+            </Table>
+        </l:VerticalLayout>
+        <beginButton>
+            <Button 
+                text="Seleccionar"
+                press="seleccionarSerie"
+                type="Accept"
+                icon="sap-icon://accept"/>
+        </beginButton>
+        <endButton>
+            <Button 
+                text="Cancelar"
+                press="cancelarBuscarSerie"
+                type="Reject"
+                icon="sap-icon://decline"/>
+        </endButton>
+    </Dialog>
+</c:FragmentDefinition>

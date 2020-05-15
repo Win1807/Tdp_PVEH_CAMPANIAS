@@ -1,0 +1,89 @@
+<core:FragmentDefinition
+xmlns="sap.m"
+xmlns:t="sap.ui.table"
+xmlns:l="sap.ui.layout"
+xmlns:core="sap.ui.core"
+xmlns:mvc="sap.ui.core.mvc"
+xmlns:f="sap.ui.layout.form"
+controllerName="sap.ui.prep_topia.controller.Home">
+    <Dialog title="Búsqueda de Material" afterClose="oEscape" contentWidth="30%">
+        <f:SimpleForm id="sfMaterial"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title=""
+			labelSpanXL="4"
+			labelSpanL="4"
+			labelSpanM="12"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="0"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="2"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+				<Label text="Texto breve material" />
+				<Input value="" id="desc" submit="onSearchMat"/>
+				<Label text="Material" />
+				<Input value="" id="material" submit="onSearchMat"/>
+				<Label text="Rango" />
+				<Input value="" type="Number" id="range1"/>
+				<Input value="" type="Number" id="range2"/>
+				<Label text="Cantidad de entradas" />
+				<Input id="CantMat" value="500" type="Number" submit="onSearchMat">
+					<layoutData>
+						<l:GridData span="XL2 L2 M3 S3" />
+					</layoutData>
+				</Input>
+				<Button text="Buscar" press="onSearchMat">
+					<layoutData>
+						<l:GridData span="XL2 L2 M4 S4" />
+					</layoutData>
+				</Button>
+			</f:content>
+		</f:SimpleForm>
+		<Table 
+            id="tbFilterMaterial"
+            mode="MultiSelect"
+            growing = "true"
+            growingScrollToLoad="false"
+            growingThreshold="7"
+            selectionChange="onSelectionChange"
+            updateFinished="onUpdateFinished"
+            items="{path:'/'}"
+            class="sapUiResponsiveContent">
+            
+            <items>
+                <ColumnListItem press="onPress">
+                    <cells>
+                        <Text text="{matnr}"></Text>
+                        <Text text="{maktx}"></Text>
+                    </cells>
+                </ColumnListItem>
+            </items>
+            <columns>
+                <Column width = "7em" minScreenWidth="Tablet" demandPopin="true">
+                    <Label text="Material" />
+                </Column>
+                <Column width = "7em" minScreenWidth="Tablet" demandPopin="true">
+                    <Label text="Denominación" />
+                </Column>
+            </columns>
+        </Table>
+        <beginButton>
+            <Button text="Aceptar" 
+                    press="onAcceptMat" 
+                    icon="sap-icon://save"
+                    type="Accept"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancelar" 
+                    press="oEscape" 
+                    icon="sap-icon://decline"
+                    type="Reject"/>
+        </endButton>
+    </Dialog>    
+</core:FragmentDefinition>

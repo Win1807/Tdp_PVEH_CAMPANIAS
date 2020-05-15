@@ -1,0 +1,161 @@
+<mvc:View controllerName="sap.ui.veh_campanias.controller.ContinuarBeneficio"
+            xmlns:mvc="sap.ui.core.mvc"
+            xmlns:u="sap.ui.unified"
+            xmlns:l="sap.ui.layout"
+            xmlns:f="sap.ui.layout.form"
+            xmlns:c="sap.ui.core"
+            xmlns:m="sap.ui.table"
+            xmlns="sap.m">
+    <Page title="Detalle de Campañas">
+		<l:VerticalLayout class="sapUiContentPadding" width="100%">
+
+            <Panel expandable="true" expanded="true" width="auto">
+                <f:SimpleForm
+                    id="Formulariocon3columns"
+                    maxContainerCols="3"
+                    editable="false"
+                    title="Datos Pedido Campaña"
+                    layout="ResponsiveGridLayout"
+                    singleContainerFullSize="false" 
+                        labelSpanL="6"
+                        labelSpanM="3"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        columnsL="3"
+                        columnsM="3">
+                    <f:content>
+                        <c:Title text="" />
+                        <Label text="Campaña ventas"/>
+                        <Text type="text" id="idCampania" text=""/>
+                        <Label text="Material"/>
+                        <Text type="text" id="idMaterial" text=""/>
+                        <Label text="Fec. Inicio de Camp"/>
+                        <Text type="text" id="idFecIni" text=""/>
+                        <Label text="Fec. Venta Mayor"/>
+                        <Text type="text" id="idFecVenta" text=""/>
+                        <Label text="Tip.Doc.Iden"/>
+                        <RadioButtonGroup columns="3" id="idRBG">
+                            <buttons>
+                                <RadioButton id="idDni1" text="DNI" select="onRB1" selected="false"/>
+                                <RadioButton id="idRUC1" text="RUC" select="onRB2" selected="false"/>
+                                <RadioButton id="idCarnet1" text="Carnet de Extranjería" select="onRB3" selected="false"/>
+                            </buttons>
+                        </RadioButtonGroup>
+                        
+                        <c:Title text="" />
+                        <Label text="Serie" />
+                        <Text type="text" id="idLote" text=""/>
+                        <Label text="Fecha Fin Camp" />
+                        <Text type="text" id="idFecFin" text=""/>
+                        <Label text="Fec.Ven.Menor" required="true" />
+                        <DatePicker
+                            id="idFecVenMen"
+                            displayFormat="dd.MM.yyyy"
+                            valueFormat="yyyyMMdd"
+                            change="handleChange"/>
+                        <Label text="NIF" required="true"/>
+                        <Input type="text" id="idNIF"/>
+                        <Label text="Apellido Paterno" required="true" id="lblApePat"/>
+                        <Input type="text" id="idApePat" />
+
+                        <c:Title text="" />
+                        <Label text=" " />
+                        <Text type="text" text=" "/>
+                        <Label text=" " />
+                        <Text type="text" text=" "/>
+                        <Label text="N° de Factura Menor" required="true"/>
+                        <Input type="text" id="idFacMen" value=""/>
+                        <Label text="Nombres / Razón Social" required="true"/>
+                        <Input type="text" id="idNombres"/>
+                        <Label text="Apellido Materno" required="true" id="lblApeMat"/>
+                        <Input type="text" id="idApeMat" />
+                    </f:content>
+                </f:SimpleForm>
+            </Panel>
+    	    <!-- DATOS GIFTCARD*************************************************************** -->
+            <Panel expandable="true" expanded="true" width="auto" id="FormGIFCARD" visible="false">
+                <f:SimpleForm
+                    maxContainerCols="3"
+                    editable="false"
+                    title="Datos de GIF CARD"
+                    layout="ResponsiveGridLayout"
+                    singleContainerFullSize="false" 
+                        labelSpanL="6"
+                        labelSpanM="3"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        columnsL="3"
+                        columnsM="3">
+                    <f:content>
+                    
+                        <c:Title text="" />
+                        <Button text="Nuevo Beneficiario" icon="sap-icon://navigation-right-arrow"  press="onBeneficio"/>
+                        <RadioButton id="idRBDni" text="DNI" select="onRBDNI"/>
+                        <Label text="NIF"/>
+                        <Input type="text" id="idNIF2" />
+                        <Label text="Nombres / Razón Social"/>
+                        <Input type="text" id="idNombres2" />
+                        <Label text="Fecha de Nacimiento" />
+                        <DatePicker
+                            id="idFecNacimiento"
+                            placeholder = "dd.MM.yyyy"
+                            change="handleChange"
+                            displayFormat="dd.MM.yyyy"
+                            valueFormat="yyyyMMdd"/>
+                        <Label text="Pais" />
+                        <Input type="text" id="idPaisButton" value="PE" width="30%" enabled="false"/>
+                        <Label text="Teléfono de Contacto" />
+                        <Input type="text" id="idTelContaco" />
+                        <Label text="Provincia" />
+                        <Input type="text" id="idProvincia" />
+                        
+                        <c:Title text="" />
+                        <RadioButton id="idRBCarnet" text="Carnet de Extranjería" select="onRBCarnet" />
+                        <Button text="Pais de Nacionalidad" id="idBtnPaisN" visible="false" icon="sap-icon://navigation-right-arrow" press="openPais"/>
+                        <Label text="Apellido Paterno"/>
+                        <Input type="text" id="idApePat2" />
+                        <Label text=" "/>
+                        <Text type="text" text=" " />
+                        <Label text=" "/>
+                        <Button text="Cod Departamento" icon="sap-icon://navigation-right-arrow" press="openDepart"/>
+                        <Label text="Dirección"  />
+                        <Input type="text" id="idDireccion" />
+                        <Label text="Oficina de Emisión" />
+                        <Input type="text" id="idOficina" />
+
+                        <c:Title text="" />
+                        <Label text=""/>
+                        <Input type="text" id="idPais" width="30%" enabled="false"/>
+                        <Label text="Apellido Materno"/>
+                        <Input type="text" id="idApeMat2" />
+                        <Label text=" "/>
+                        <Text type="text" text=" " />
+                        <Label text=" "/>
+                        <Input type="text" id="idDepa" width="50%" enabled="false"/>
+                        <Text text="" id="idDepaText" enabled="false" />
+                        <Label text="Distrito"/>
+                        <Input type="text" id="idDistrito" />
+                        <Label text="Importe a abonar" />
+                        <Input type="text" id="idImporte" editable="false" value="0.00" textAlign="End"/>
+                        
+                    </f:content>
+                </f:SimpleForm>
+            </Panel>
+		</l:VerticalLayout>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button 
+                        press="onSave" 
+                        type="Accept" 
+                        text="Grabar Campaña" 
+                        icon="sap-icon://save"/>
+                <Button 
+                        press="onClose" 
+                        type="Reject" 
+                        text="Cancelar" 
+                        icon="sap-icon://synchronize"/>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

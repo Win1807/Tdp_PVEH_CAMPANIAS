@@ -1,0 +1,75 @@
+<c:FragmentDefinition          
+          xmlns:l="sap.ui.layout" 
+          xmlns:f="sap.ui.layout.form" 
+          xmlns:mvc="sap.ui.core.mvc"
+          xmlns:c="sap.ui.core" 
+          xmlns:t="sap.ui.table"
+          xmlns="sap.m">    
+        <Dialog title="Visualizar Cabecera" afterClose="onCerrarCabecera">
+        <l:VerticalLayout width="100%">
+				<Table id="Cabecera1" items="{path:'/'}">
+	            <columns>
+	                <Column width="4rem">
+	                    <Text text="Campaña ventas" />
+	                </Column>
+	                <Column width="4rem">
+	                    <Text text="Componente" />
+	                </Column>
+	                <Column width="4rem">
+	                    <Text text="Denominación" />
+	                </Column>
+	                <Column width="4rem" hAlign="End">
+	                    <Text text="Cantidad" />
+	                </Column>
+	            </columns>
+	            <items>
+	                <ColumnListItem>
+	                    <cells>
+	                    	<Text text="{path: 'cmpgn', formatter: '.formatter.integer'}"/>
+	                        <Text text="{idnrk}"/>
+	                        <Text text="{maktx}"/>
+	                        <Text text="{path: 'menge', formatter: '.formatter.integer'}"/>
+	                    </cells>
+	                </ColumnListItem>
+	            </items>
+	        </Table>
+	        <Table id="Cabecera2" items="{path:'/'}">
+	            <columns>
+	                <Column width="4rem">
+	                    <Text text="Doc.comercial" />
+	                </Column>
+	                <Column width="4rem">
+	                    <Text text="Creado el" />
+	                </Column>
+	                <Column width="4rem">
+	                    <Text text="Creado por" />
+	                </Column>
+	                <Column width="4rem">
+	                    <Text text="Referencia" />
+	                </Column>
+	                <Column width="4rem">
+	                    <Text text="Destino" />
+	                </Column>
+	            </columns>
+	            <items>
+	                <ColumnListItem>
+	                    <cells>
+	                        <Text text="{path: 'vbeln', formatter: '.formatter.quantity'}"/>
+	                        <Text text="{path: 'erdat', formatter: '.formatter.dates'}"/>
+	                        <Text text="{ernam}"/>
+	                        <Text text="{xblnr}"/>
+	                        <Text text="{destino}"/>
+	                    </cells>
+	                </ColumnListItem>
+	            </items>
+	        </Table>
+            </l:VerticalLayout>
+            
+	        <endButton>
+	          <Button text="Ok" 
+	                  press="onCerrarCabecera" 
+	                  icon="sap-icon://decline"
+	                  type="Reject"/>
+	        </endButton>
+        </Dialog>
+</c:FragmentDefinition>

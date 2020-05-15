@@ -1,0 +1,77 @@
+<c:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:c="sap.ui.core"    
+    xmlns:l="sap.ui.layout">
+	<Dialog 
+        title = "Selección Departamento"
+        afterClose= "closeDepat"
+        enableScrolling="true"
+        contentWidth="60px">
+        <l:VerticalLayout>
+
+            <f:SimpleForm id="SimpleFormDisplay354"
+                editable="false"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="3"
+                labelSpanS="12"
+                adjustLabelSpan="true"
+                emptySpanXL="4"
+                emptySpanL="4"
+                emptySpanM="4"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false">
+                <f:content>
+                    <Label text="" labelFor=""/>
+                    <Input id="idDepartamento" submit=""/>
+                    <Button 
+                        text="Filtrar"
+                        press=""
+                        type="Accept"
+                        icon="sap-icon://search"/>
+                </f:content>
+            </f:SimpleForm>
+
+            <Table 
+                id="tbDepartamentos"
+                mode="SingleSelectLeft"
+                selectionChange="onChangeDepa"
+                growing = "true"
+                growingScrollToLoad="false"
+                growingThreshold="7"
+                updateFinished="onUpdateFinished"
+                items="{path:'/'}"
+                class="sapUiResponsiveContent">
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{bland}" />
+                            <Text text="{bezei}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column width="3rem">
+                        <Label text="Región" />
+                    </Column>
+                    <Column width="11rem">
+                        <Label text="Denominación" />
+                    </Column>
+                </columns>
+            </Table>
+        </l:VerticalLayout>
+        <endButton>
+            <Button 
+                text="Cancelar"
+                press="closeDepat"
+                type="Reject"
+                icon="sap-icon://decline"/>
+        </endButton>
+	</Dialog>
+</c:FragmentDefinition>

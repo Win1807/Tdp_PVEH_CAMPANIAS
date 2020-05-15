@@ -1,0 +1,293 @@
+<mvc:View controllerName="sap.ui.veh_campanias.controller.Home" xmlns:mvc="sap.ui.core.mvc" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form" xmlns:c="sap.ui.core" xmlns:m="sap.ui.table" xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:smartField="sap.ui.comp.smartfield" xmlns:smartVariantManagement="sap.ui.comp.smartvariants"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Page title="Campañas" showNavButton="true" navButtonPress="onNavBack">
+		<l:VerticalLayout class="sapUiContentPadding" width="100%">
+			<f:Form id="FORMULARIO" editable="true">
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="6" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0"
+						emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer title="">
+						<f:formElements>
+							<f:FormElement label="Versión de Vehículo" required="true">
+								<f:fields>
+									<MultiInput id="material" valueHelpRequest="onFiltroMaterial" enableMultiLineMode="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Serie">
+								<f:fields>
+									<MultiInput id="serie" valueHelpRequest="buscaSerie" enableMultiLineMode="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Búsquedas por">
+								<f:fields>
+									<l:VerticalLayout>
+										<!-- -@WVF001<RadioButton id="idDisponibles" select="onDisponible" selected="true" groupName="GroupA" text="Disponible para Campaña" key="ra1" />-->
+										<!---@WVF001<RadioButton id="idProcesadas" select="onCampania" groupName="GroupA" text="Campañas Procesadas" key="ra2"/>-->
+										<!--+@WVF001-->
+										<RadioButtonGroup id="rbgid" columns="1" width="500px" class="sapUiMediumMarginBottom" select="onRBSelected">
+											<RadioButton id="idDisponibles" selected="true" groupName="GroupA" text="Disponible para Campaña" key="ra1"/>
+											<RadioButton id="idProcesadas" groupName="GroupA" text="Campañas Procesadas" key="ra2"/>
+										</RadioButtonGroup>
+										<!--+@WVF001-->
+									</l:VerticalLayout>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+					<f:FormContainer title="">
+						<f:formElements>
+							<f:FormElement label="Fecha Inicio" id="fechainicio" visible="false">
+								<f:fields>
+									<DatePicker id="fechaini" change="handleChange" placeholder="dd.mm.aaaa" displayFormat="dd.MM.yyyy" valueFormat="yyyyMMdd" requerid="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Fecha Fin" id="fechafinal" visible="false">
+								<f:fields>
+									<DatePicker id="fechafin" change="handleChange" placeholder="dd.mm.aaaa" displayFormat="dd.MM.yyyy" valueFormat="yyyyMMdd" requerid="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="">
+								<f:fields>
+									<Button type="Accept" press="onSearchList" text="Buscar" icon="sap-icon://search"/>
+									<Button icon="sap-icon://synchronize" text="Limpiar" press="onClean"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+			<!-- Paginación -->
+			<smartVariantManagement:SmartVariantManagement id="pageVariantId" class="sapUiTinyMarginTop sapUiTinyMarginEnd sapUiTinyMarginBegin"
+				persistencyKey="PageVariantPKey"/>
+			<l:HorizontalLayout>
+				<Label class="sapUiTinyMarginTop sapUiTinyMarginEnd sapUiTinyMarginBegin" text="Cantidad a mostrar:"/>
+				<Select id="sShow" selectKey="10" change="onShow">
+					<c:ListItem key="10" text="10"/>
+					<c:ListItem key="25" text="25"/>
+					<c:ListItem key="50" text="50"/>
+					<c:ListItem key="100" text="100"/>
+				</Select>
+				<Button id="btnSiguiente" icon="sap-icon://navigation-right-arrow" iconFirst="false" type="Transparent" text="Siguiente" press="goNext"/>
+				<Button id="btnAnterior" icon="sap-icon://navigation-left-arrow" type="Transparent" text="Anterior" press="goPrevious"/>
+			</l:HorizontalLayout>
+			<HeaderContainer scrollStep="300" showDividers="false">
+				<Select id="idCbo" selectKey="" items="{resultado>/itemsTrans}" class="sapUiSmallMarginBottom">
+					<c:Item key="{resultado>cmpgn}" text="{resultado>cmpgntxt}"/>
+				</Select>
+				<Button id="idBtnSelectedCamp" type="Default" text="Seleccionar Campaña" press="onSeleccionarCampania"
+					icon="sap-icon://navigation-right-arrow" class="sapUiSmallMarginBottom"></Button>
+				<Button type="Default" text="Export" press="pressexportar" icon="sap-icon://download" class="sapUiSmallMarginBottom"></Button>
+				<Button type="Default" text="Ver" icon="sap-icon://add-document" press="onVisualizarCabecera" class="sapUiSmallMarginBottom"></Button>
+				<Button visible="false" type="Default" text="Borrar Campaña" icon="sap-icon://delete" press="onDeleteCampania"
+					class="sapUiSmallMarginBottom" id="idBtnDeleteCamp"/>
+				<Button visible="false" type="Default" text="Datos Gift Card" icon="sap-icon://credit-card" press="onDatosGift"
+					class="sapUiSmallMarginBottom" id="idBtnDataG" enabled="false"></Button>
+			</HeaderContainer>
+			<ScrollContainer horizontal="true">
+				<smartTable:SmartTable id="tblVisualizarT" smartFilterId="smartFilterBar" tableType="ResponsiveTable" smartVariant="pageVariantId"
+					entitySet="RPT_CAMPANIASSet" useTablePersonalisation="true" header="Listado" dataReceived="onLoadT" beforeRebindTable="onBeforeTBL"
+					useExportToExcel="true" enableAutoBinding="false" customData:useSmartField="false" showRowCount="true" persistencyKey="SmartTablePKey"
+					class="bell-row"
+					ignoreFromPersonalisation="Color,Dias,Ubica,Vhvin,Avail,Statu,Fecven,Lifnr,Fecarri,Zzlibbloq,Observacion,Destino,Vapor,Cmpgn,PagoAnticipado"
+					requestAtLeastFields="Color,Dias,Ubica,Vhvin,Avail,Statu,Fecven,Lifnr,Fecarri,Zzlibbloq,Observacion,Destino,Vapor,Cmpgn,PagoAnticipado">
+					<smartTable:customToolbar>
+						<OverflowToolbar design="Transparent">
+							<ToolbarSpacer/>
+							<Button press="onVolver" icon="sap-icon://close-command-field" tooltip="Volver" id="botonVolver"/>
+						</OverflowToolbar>
+					</smartTable:customToolbar>
+					<Table selectionChange="onChangeItem" id="visualizarTable">
+						<columns>
+							<Column width="6rem">
+								<customData>
+									<c:CustomData key="p13nData" value='\{"columnKey": "Serie", "leadingProperty":"Serie", "sortProperty":"Serie", "filterProperty":"Serie"}'/>
+								</customData>
+								<Label text="Serie"/>
+							</Column>
+							<Column width="6rem" hAlign="End">
+								<customData>
+									<c:CustomData key="p13nData" value='\{"columnKey": "Matnr","leadingProperty":"Matnr", "sortProperty":"Matnr", "filterProperty":"Matnr"}'/>
+								</customData>
+								<Label text="Cod. Versión"/>
+							</Column>
+							<Column width="12rem">
+								<customData>
+									<c:CustomData key="p13nData" value='\{"columnKey": "Model","leadingProperty":"Model", "sortProperty":"Model", "filterProperty":"Model"}'/>
+								</customData>
+								<Label text="Des. Versión"/>
+							</Column>
+							<Column width="6rem">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "Availtxt","leadingProperty":"Availtxt", "sortProperty":"Availtxt", "filterProperty":"Availtxt"}'/>
+								</customData>
+								<Label text="Disponibilidad"/>
+							</Column>
+							<Column width="4rem">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "ZzanoFab","leadingProperty":"ZzanoFab", "sortProperty":"ZzanoFab", "filterProperty":"ZzanoFab"}'/>
+								</customData>
+								<Label text="Año fab."/>
+							</Column>
+							<Column width="5rem">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "Zzcolor","leadingProperty":"Zzcolor", "sortProperty":"Zzcolor", "filterProperty":"Zzcolor"}'/>
+								</customData>
+								<Label text="Cód. color"/>
+							</Column>
+							<Column width="15rem">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "ZzcolorDesc","leadingProperty":"ZzcolorDesc", "sortProperty":"ZzcolorDesc", "filterProperty":"ZzcolorDesc"}'/>
+								</customData>
+								<Label text="Color"/>
+							</Column>
+							<Column width="5rem">
+								<customData>
+									<c:CustomData key="p13nData" value='\{"columnKey": "Kunnr","leadingProperty":"Kunnr", "sortProperty":"Kunnr", "filterProperty":"Kunnr"}'/>
+								</customData>
+								<Label text="Dealer"/>
+							</Column>
+							<Column width="4rem">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "ZzanoMod","leadingProperty":"ZzanoMod", "sortProperty":"ZzanoMod", "filterProperty":"ZzanoMod"}'/>
+								</customData>
+								<Label text="Año mod."/>
+							</Column>
+							<Column width="6rem">
+								<customData>
+									<c:CustomData key="p13nData" value='\{"columnKey": "Statut","leadingProperty":"Statut", "sortProperty":"Statut", "filterProperty":"Statut"}'/>
+								</customData>
+								<Label text="Status"/>
+							</Column>
+							<Column width="10rem">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "Zzlibbloqtxt","leadingProperty":"Zzlibbloqtxt", "sortProperty":"Zzlibbloqtxt", "filterProperty":"Zzlibbloqtxt"}'/>
+								</customData>
+								<Label text="Beneficio"/>
+							</Column>
+							<Column width="20rem" id="Column1">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "Cmpgntxt","leadingProperty":"Cmpgntxt", "sortProperty":"Cmpgntxt", "filterProperty":"Cmpgntxt"}'/>
+								</customData>
+								<Label text="Campaña Ventas"/>
+							</Column>
+							<Column width="5rem" id="Column2">
+								<customData>
+									<c:CustomData key="p13nData" value='\{"columnKey": "Motor","leadingProperty":"Motor", "sortProperty":"Motor", "filterProperty":"Motor"}'/>
+								</customData>
+								<Label text="Estado"/>
+							</Column>
+							<Column width="6rem" id="Column3">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "Fecdesad","leadingProperty":"Fecdesad", "sortProperty":"Fecdesad", "filterProperty":"Fecdesad"}'/>
+								</customData>
+								<Label text="Fec. Solicitud"/>
+							</Column>
+							<Column width="5rem" id="Column4">
+								<customData>
+									<c:CustomData key="p13nData"
+										value='\{"columnKey": "Fecduareal","leadingProperty":"Fecduareal", "sortProperty":"Fecduareal", "filterProperty":"Fecduareal"}'/>
+								</customData>
+								<Label text="Fec. Pago"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{path: 'Serie', formatter: '.formatter.borrar0izalfanumerico'}"/>
+									<Text text="{Matnr}"/>
+									<Text text="{Model}"/>
+									<Text text="{Availtxt}"/>
+									<Text text="{ZzanoFab}"/>
+									<Text text="{Zzcolor}"/>
+									<Text text="{ZzcolorDesc}"/>
+									<Text text="{Kunnr}"/>
+									<Text text="{ZzanoMod}"/>
+									<Text text="{Statut}"/>
+									<Text text="{Zzlibbloqtxt}"/>
+									<Text text="{Cmpgntxt}"/>
+									<Text text="{Motor}"/>
+									<Text text="{path: 'Fecdesad', formatter: '.formatter.getfecha'}"/>
+									<Text text="{path: 'Fecduareal', formatter: '.formatter.getfecha'}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</smartTable:SmartTable>
+			</ScrollContainer>
+			<smartTable:SmartTable id="tblVisualizarM" smartFilterId="smartFilterBar" tableType="ResponsiveTable" smartVariant="pageVariantId"
+				entitySet="RPT_CAMPANIASSet" useTablePersonalisation="true" header="Listado" dataReceived="onLoadM" beforeRebindTable="onBeforeTBL"
+				useExportToExcel="true" enableAutoBinding="false" customData:useSmartField="false" showRowCount="true" demandPopin="true"
+				persistencyKey="SmartTablePKey"
+				ignoreFromPersonalisation="Color,Dias,Ubica,Vhvin,Avail,Statu,Fecven,Lifnr,Fecarri,Zzlibbloq,Observacion,Destino,Vapor,Cmpgn,PagoAnticipado"
+				requestAtLeastFields="Color,Dias,Ubica,Vhvin,Avail,Statu,Fecven,Lifnr,Fecarri,Zzlibbloq,Observacion,Destino,Vapor,Cmpgn,PagoAnticipado">
+				<Table>
+					<columns>
+						<Column width="6rem">
+							<customData>
+								<c:CustomData key="p13nData" value='\{"columnKey": "Serie", "leadingProperty":"Serie", "sortProperty":"Serie", "filterProperty":"Serie"}'/>
+							</customData>
+							<Label text="Serie"/>
+						</Column>
+						<Column width="6rem">
+							<customData>
+								<c:CustomData key="p13nData" value='\{"columnKey": "Matnr","leadingProperty":"Matnr", "sortProperty":"Matnr", "filterProperty":"Matnr"}'/>
+							</customData>
+							<Label text="Cod. Versión"/>
+						</Column>
+						<Column width="12rem">
+							<customData>
+								<c:CustomData key="p13nData" value='\{"columnKey": "Model","leadingProperty":"Model", "sortProperty":"Model", "filterProperty":"Model"}'/>
+							</customData>
+							<Label text="Des. Versión"/>
+						</Column>
+						<Column width="6rem">
+							<customData>
+								<c:CustomData key="p13nData"
+									value='\{"columnKey": "Availtxt","leadingProperty":"Availtxt", "sortProperty":"Availtxt", "filterProperty":"Availtxt"}'/>
+							</customData>
+							<Label text="Disponibilidad"/>
+						</Column>
+						<Column width="4rem">
+							<customData>
+								<c:CustomData key="p13nData"
+									value='\{"columnKey": "ZzanoFab","leadingProperty":"ZzanoFab", "sortProperty":"ZzanoFab", "filterProperty":"ZzanoFab"}'/>
+							</customData>
+							<Label text="Año fab."/>
+						</Column>
+						<Column width="5rem">
+							<customData>
+								<c:CustomData key="p13nData"
+									value='\{"columnKey": "Zzcolor","leadingProperty":"Zzcolor", "sortProperty":"Zzcolor", "filterProperty":"Zzcolor"}'/>
+							</customData>
+							<Label text="Cód. color"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem type="Navigation" press="onPressItem">
+							<cells>
+								<Text text="{Serie}"/>
+								<Text text="{Matnr}"/>
+								<Text text="{Model}"/>
+								<Text text="{Availtxt}"/>
+								<Text text="{ZzanoFab}"/>
+								<Text text="{Zzcolor}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</smartTable:SmartTable>
+		</l:VerticalLayout>
+	</Page>
+</mvc:View>

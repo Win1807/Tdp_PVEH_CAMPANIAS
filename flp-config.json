@@ -1,0 +1,35 @@
+{
+    "application": {
+        "id": "",
+        "title": "sap.ui.veh_campanias.Tdp_PVEH_CAMPANIAS",
+        "description": "Campanhas",
+        "type": "SAP_UI5_Component",
+        "componentUrl": "/",
+        "appUrl": "#Tdp_PVEH_CAMPANIAS-Display",
+        "navigationComponentName": "sap.ui.veh_campanias",
+        "intentSemanticObject": "Tdp_PVEH_CAMPANIAS",
+        "intentAction": "Display",
+        "html5ApplicationName": "tdppvehcampanias",
+        "HCPParentApplicationName": ""
+    },
+    "assignment": {
+        "groups": [
+            "227b60ea-ff71-4259-8e0c-723ec48e7353-1515795184575"
+        ],
+        "contentPackages": [
+            "16d1bf9f-745a-458d-a3f6-eff173009fdf-1515795427335"
+        ],
+        "categories": []
+    },
+    "tile": {
+        "type": "StaticTile",
+        "title": "Campanhas",
+        "subtitle": "",
+        "searchKeywords": "Campanhas,",
+        "displayIconUrl": "sap-icon://chart-table-view",
+        "displayInfoText": "",
+        "size": "1x1",
+        "serviceURL": "",
+        "refreshInterval": ""
+    }
+}
